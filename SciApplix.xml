@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="sciapplix" default="all">
+  
+  
+  <property file="SciApplix.properties"/>
+  <!-- Uncomment the following property if no tests compilation is needed -->
+  <!-- 
+  <property name="skip.tests" value="true"/>
+   -->
+  
+  <!-- Compiler options -->
+  
+  <property name="compiler.debug" value="on"/>
+  <property name="compiler.generate.no.warnings" value="off"/>
+  <property name="compiler.args" value=""/>
+  <property name="compiler.max.memory" value="700m"/>
+  <patternset id="ignored.files">
+    <exclude name="**/CVS/**"/>
+    <exclude name="**/SCCS/**"/>
+    <exclude name="**/RCS/**"/>
+    <exclude name="**/rcs/**"/>
+    <exclude name="**/.DS_Store/**"/>
+    <exclude name="**/.svn/**"/>
+    <exclude name="**/.pyc/**"/>
+    <exclude name="**/.pyo/**"/>
+    <exclude name="**/*.pyc/**"/>
+    <exclude name="**/*.pyo/**"/>
+    <exclude name="**/.git/**"/>
+    <exclude name="**/*.hprof/**"/>
+    <exclude name="**/_svn/**"/>
+    <exclude name="**/.hg/**"/>
+    <exclude name="**/*.lib/**"/>
+    <exclude name="**/*~/**"/>
+    <exclude name="**/__pycache__/**"/>
+    <exclude name="**/.bundle/**"/>
+    <exclude name="**/*.rbc/**"/>
+    <exclude name="**/vssver.scc/**"/>
+    <exclude name="**/vssver2.scc/**"/>
+  </patternset>
+  <patternset id="library.patterns">
+    <include name="*.war"/>
+    <include name="*.ear"/>
+    <include name="*.apk"/>
+    <include name="*.zip"/>
+    <include name="*.swc"/>
+    <include name="*.ane"/>
+    <include name="*.egg"/>
+    <include name="*.jar"/>
+  </patternset>
+  <patternset id="compiler.resources">
+    <exclude name="**/?*.java"/>
+    <exclude name="**/?*.form"/>
+    <exclude name="**/?*.class"/>
+    <exclude name="**/?*.groovy"/>
+    <exclude name="**/?*.scala"/>
+    <exclude name="**/?*.flex"/>
+    <exclude name="**/?*.kt"/>
+    <exclude name="**/?*.clj"/>
+  </patternset>
+  
+  <!-- JDK definitions -->
+  
+  <property name="jdk.bin.1.8" value="${jdk.home.1.8}/bin"/>
+  <path id="jdk.classpath.1.8">
+    <fileset dir="${jdk.home.1.8}">
+      <include name="jre/lib/charsets.jar"/>
+      <include name="jre/lib/deploy.jar"/>
+      <include name="jre/lib/javaws.jar"/>
+      <include name="jre/lib/jce.jar"/>
+      <include name="jre/lib/jfr.jar"/>
+      <include name="jre/lib/jfxswt.jar"/>
+      <include name="jre/lib/jsse.jar"/>
+      <include name="jre/lib/management-agent.jar"/>
+      <include name="jre/lib/plugin.jar"/>
+      <include name="jre/lib/resources.jar"/>
+      <include name="jre/lib/rt.jar"/>
+      <include name="jre/lib/ext/access-bridge-64.jar"/>
+      <include name="jre/lib/ext/cldrdata.jar"/>
+      <include name="jre/lib/ext/dnsns.jar"/>
+      <include name="jre/lib/ext/jaccess.jar"/>
+      <include name="jre/lib/ext/jfxrt.jar"/>
+      <include name="jre/lib/ext/localedata.jar"/>
+      <include name="jre/lib/ext/nashorn.jar"/>
+      <include name="jre/lib/ext/sunec.jar"/>
+      <include name="jre/lib/ext/sunjce_provider.jar"/>
+      <include name="jre/lib/ext/sunmscapi.jar"/>
+      <include name="jre/lib/ext/sunpkcs11.jar"/>
+      <include name="jre/lib/ext/zipfs.jar"/>
+    </fileset>
+  </path>
+  
+  <property name="project.jdk.home" value="${jdk.home.1.8}"/>
+  <property name="project.jdk.bin" value="${jdk.bin.1.8}"/>
+  <property name="project.jdk.classpath" value="jdk.classpath.1.8"/>
+  
+  
+  <!-- Global Libraries -->
+  <!-- Register Custom Compiler Taskdefs -->
+  <property name="javac2.home" value="${idea.home}/lib"/>
+  <path id="javac2.classpath">
+    <pathelement location="${javac2.home}/javac2.jar"/>
+    <pathelement location="${javac2.home}/jdom.jar"/>
+    <pathelement location="${javac2.home}/asm-all.jar"/>
+    <pathelement location="${javac2.home}/jgoodies-forms.jar"/>
+  </path>
+  <target name="register.custom.compilers">
+    <taskdef name="javac2" classname="com.intellij.ant.Javac2" classpathref="javac2.classpath"/>
+    <taskdef name="instrumentIdeaExtensions" classname="com.intellij.ant.InstrumentIdeaExtensions" classpathref="javac2.classpath"/>
+  </target>
+  
+  <!-- Modules -->
+  
+  
+  <!-- Module SciApplix -->
+  
+  <dirname property="module.sciapplix.basedir" file="${ant.file}"/>
+  
+  
+  <property name="module.jdk.home.sciapplix" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.sciapplix" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.sciapplix" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.sciapplix" value="-encoding UTF-8 -source 8 ${compiler.args}"/>
+  
+  <property name="sciapplix.output.dir" value="${module.sciapplix.basedir}/out/production/SciApplix"/>
+  <property name="sciapplix.testoutput.dir" value="${module.sciapplix.basedir}/out/test/SciApplix"/>
+  
+  <path id="sciapplix.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="sciapplix.module.production.classpath">
+    <path refid="${module.jdk.classpath.sciapplix}"/>
+  </path>
+  
+  <path id="sciapplix.runtime.production.module.classpath">
+    <pathelement location="${sciapplix.output.dir}"/>
+  </path>
+  
+  <path id="sciapplix.module.classpath">
+    <path refid="${module.jdk.classpath.sciapplix}"/>
+    <pathelement location="${sciapplix.output.dir}"/>
+  </path>
+  
+  <path id="sciapplix.runtime.module.classpath">
+    <pathelement location="${sciapplix.testoutput.dir}"/>
+    <pathelement location="${sciapplix.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.sciapplix">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.sciapplix">
+    <patternset refid="excluded.from.module.sciapplix"/>
+  </patternset>
+  
+  <path id="sciapplix.module.sourcepath">
+    <dirset dir="${module.sciapplix.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.sciapplix" depends="compile.module.sciapplix.production,compile.module.sciapplix.tests" description="Compile module SciApplix"/>
+  
+  <target name="compile.module.sciapplix.production" depends="register.custom.compilers" description="Compile module SciApplix; production classes">
+    <mkdir dir="${sciapplix.output.dir}"/>
+    <javac2 destdir="${sciapplix.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.sciapplix}/javac">
+      <compilerarg line="${compiler.args.sciapplix}"/>
+      <bootclasspath refid="sciapplix.module.bootclasspath"/>
+      <classpath refid="sciapplix.module.production.classpath"/>
+      <src refid="sciapplix.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.sciapplix"/>
+    </javac2>
+    
+    <copy todir="${sciapplix.output.dir}">
+      <fileset dir="${module.sciapplix.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.sciapplix.tests" depends="register.custom.compilers,compile.module.sciapplix.production" description="compile module SciApplix; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.sciapplix" description="cleanup module">
+    <delete dir="${sciapplix.output.dir}"/>
+    <delete dir="${sciapplix.testoutput.dir}"/>
+  </target>
+  
+  <target name="init" description="Build initialization">
+    <!-- Perform any build initialization in this target -->
+  </target>
+  
+  <target name="clean" depends="clean.module.sciapplix" description="cleanup all"/>
+  
+  <target name="build.modules" depends="init, clean, compile.module.sciapplix" description="build all modules"/>
+  
+  <target name="init.artifacts">
+    <property name="artifacts.temp.dir" value="${basedir}/__artifacts_temp"/>
+    <property name="artifact.output.sciapplix" value="${basedir}/out/artifacts/SciApplix"/>
+    <mkdir dir="${artifacts.temp.dir}"/>
+    <property name="temp.jar.path.SciApplix.jar" value="${artifacts.temp.dir}/SciApplix.jar"/>
+  </target>
+  
+  <target name="artifact.sciapplix" depends="init.artifacts" description="Build &#39;SciApplix&#39; artifact">
+    <property name="artifact.temp.output.sciapplix" value="${artifacts.temp.dir}/SciApplix"/>
+    <mkdir dir="${artifact.temp.output.sciapplix}"/>
+    <jar destfile="${temp.jar.path.SciApplix.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain">
+      <zipfileset file="${basedir}/META-INF/MANIFEST.MF" prefix="META-INF"/>
+    </jar>
+    <copy file="${temp.jar.path.SciApplix.jar}" tofile="${artifact.temp.output.sciapplix}/SciApplix.jar"/>
+  </target>
+  
+  <target name="build.all.artifacts" depends="artifact.sciapplix" description="Build all artifacts">
+    <mkdir dir="${artifact.output.sciapplix}"/>
+    <copy todir="${artifact.output.sciapplix}">
+      <fileset dir="${artifact.temp.output.sciapplix}"/>
+    </copy>
+    
+    <!-- Delete temporary files -->
+    <delete dir="${artifacts.temp.dir}"/>
+  </target>
+  
+  <target name="all" depends="build.modules, build.all.artifacts" description="build all"/>
+</project>
